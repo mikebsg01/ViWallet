@@ -14,32 +14,8 @@ export default class LoginScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.keepSession = this.keepSession.bind(this);
         this.onPressLogin = this.onPressLogin.bind(this);
         this.loginUser = this.loginUser.bind(this);
-    }
-
-    keepSession = async () => {
-        try {
-            const session = await AsyncStorage.getItem('session');
-
-            if (session != null) {
-                const { navigation } = this.props;
-                navigation.navigate('HomeScreen');
-            }
-        } catch (error) {
-            alert('Ocurrió un error al cargar los datos.');
-        }
-    };
-
-    componentWillMount() {
-        this.keepSession();
-    }
-
-    async getRandomDogImage() {
-        let response = await fetch('https://dog.ceo/api/breeds/image/random');
-        let responseJson = await response.json();
-        return responseJson.message;
     }
 
     loginUser = async (user) => {
@@ -55,7 +31,6 @@ export default class LoginScreen extends Component {
                 return false;
             }
 
-            userFound.profilePictureUri = await this.getRandomDogImage();
             await AsyncStorage.setItem('session', JSON.stringify(userFound));
             
             const { navigation } = this.props;
@@ -88,7 +63,7 @@ export default class LoginScreen extends Component {
 			<Text style={styles.lblLogin}>Iniciar sesión</Text>
 			<TextInput placeholder="Correo electrónico" value={this.state.email} onChangeText={(text) => this.setState({ email: text })} keyboardType="email-address" selectionColor="#f50057" underlineColorAndroid="#cfd8dc" style={styles.inputEmail} />
 			<TextInput placeholder="Contraseña" value={this.state.password} onChangeText={(text) => this.setState({ password: text })} textContentType="password" secureTextEntry={true} selectionColor="#f50057" underlineColorAndroid="#cfd8dc" style={styles.inputPassword} />
-			<Button title="Ingresar" onPress={this.onPressLogin} style={styles.btnLogin} />
+			<Button title="Ingresar" color="#301b73" onPress={this.onPressLogin} style={styles.btnLogin} />
             <Text style={styles.linkRegister} onPress={this.onPressLinkRegister}>Crear una cuenta nueva</Text>
 		</View>
 		);
@@ -131,6 +106,6 @@ const styles = StyleSheet.create({
   },
   linkRegister: {
       marginVertical: 30,
-      color: '#1990B8'
+      color: '#301b73'
   }
 });
