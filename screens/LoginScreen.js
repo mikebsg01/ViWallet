@@ -34,7 +34,7 @@ export default class LoginScreen extends Component {
             await AsyncStorage.setItem('session', JSON.stringify(userFound));
             
             const { navigation } = this.props;
-            navigation.navigate('HomeScreen');
+            navigation.navigate('Accounts');
 
             return userFound;
         } catch (error) {
@@ -54,7 +54,7 @@ export default class LoginScreen extends Component {
     
     onPressLinkRegister = () => {
         const { navigation } = this.props;
-        navigation.navigate('RegisterScreen');
+        navigation.navigate('Register');
     }
 
 	render() {
