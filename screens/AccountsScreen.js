@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
-import { AsyncStorage, StyleSheet, Text, View, FlatList, ScrollView, Button, Image } from 'react-native';
 import TabBar from '../components/TabBar';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
+import { 
+    AsyncStorage,
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    TouchableOpacity
+} from 'react-native';
+
+import {
+    faCreditCard,
+    faMoneyBill,
+    faArrowDown
+} from '@fortawesome/free-solid-svg-icons';
 
 export default class AccountsScreen extends Component {
 
@@ -22,12 +37,6 @@ export default class AccountsScreen extends Component {
     getUser = async () => {
         try {
             const session = JSON.parse(await AsyncStorage.getItem('session'));
-            const { navigation } = this.props;
-
-            if (session === null) {
-                navigation.navigate('LoginScreen');
-                return;
-            }
 
             this.setState({
                 firstName: session.firstName,
@@ -43,12 +52,29 @@ export default class AccountsScreen extends Component {
         this.getUser();
     }
 
+    onPressRecharge() {
+        alert('Recargar');
+    }
+
 	render() {
 		return (
         <View style={styles.container}>
             <Text style={styles.lblTitle}>Mis cuentas</Text>
             <ScrollView contentContainerStyle={styles.scrollContentContainer}>
-                
+                <View style={styles.accountView}>
+                    <FontAwesomeIcon icon={faCreditCard} style={styles.accountIcon}/>
+                    <Text style={styles.accountType}>Tarjeta de débito</Text>
+                    <TouchableOpacity onPress={this.onPressRecharge} style={styles.accountOptionButton}>
+                        <FontAwesomeIcon icon={faArrowDown} style={styles.accountOptionButtonIcon}/>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.accountView}>
+                    <FontAwesomeIcon icon={faMoneyBill} style={styles.accountIcon}/>
+                    <Text style={styles.accountType}>Efectivo</Text>
+                    <TouchableOpacity onPress={this.onPressRecharge} style={styles.accountOptionButton}>
+                        <FontAwesomeIcon icon={faArrowDown} style={styles.accountOptionButtonIcon}/>
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
             <TabBar selected="Accounts"/>
         </View>
@@ -70,13 +96,32 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingVertical: 5,
         paddingTop: 5,
-        paddingBottom: 35
-	},
-    imgDog: {
+        paddingBottom: 35,
         flex: 1,
-        width: 86, 
-        height: 86,
-        borderRadius: 8,
-        margin: 15
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch'
+	},
+    accountView: {
+        backgroundColor: '#00f',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingVertical: 20,
+        paddingHorizontal: 10
+    },
+    accountIcon: {
+        fontSize: 22
+    },
+    accountType: {
+        fontSize: 16
+    },
+    accountOptionButton: {
+        elevation: 8,
+        borderRadius: 50,
+        backgroundColor: '#25b535',
+        padding: 8
+    },
+    accountOptionButtonIcon: {
+        color: '#ffffff'
     }
 });

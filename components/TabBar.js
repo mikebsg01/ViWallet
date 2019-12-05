@@ -18,7 +18,7 @@ class TabBar extends Component {
 
 		return (
 			<TouchableOpacity style={styles.tab} onPress={() => navigation.navigate(route)}>
-                <FontAwesomeIcon icon={this.icon(iconName)} size={28} style={styles.tabIcon} />
+                <FontAwesomeIcon icon={this.icon(iconName)} size={24} style={styles.tabIcon} />
                 { selected === route && <Text style={styles.tabText}>{text}</Text> }
 				{ selected === route && <View style={styles.tabLine}/> }
 			</TouchableOpacity>
