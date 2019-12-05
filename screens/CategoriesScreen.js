@@ -11,14 +11,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import {
-    faCreditCard,
-    faMoneyBill,
-    faArrowDown,
-    faExchangeAlt
-} from '@fortawesome/free-solid-svg-icons';
-
-export default class AccountsScreen extends Component {
+export default class CategoriesScreen extends Component {
 
     static navigationOptions = {
         header: null
@@ -53,63 +46,14 @@ export default class AccountsScreen extends Component {
         this.getUser();
     }
 
-    onPressRecharge() {
-        alert('Recargar');
-    }
-
-    renderAccountOption = ({ text, icon, bgColor, color }) => {
-        const accountOptionButton = Object.assign({}, styles.accountOptionButton, { 
-            backgroundColor: bgColor,
-            color: color
-        });
-
-        return (
-            <View style={styles.accountOption}>
-                <TouchableOpacity onPress={this.onPressRecharge} style={accountOptionButton}>
-                    <FontAwesomeIcon icon={icon} style={styles.accountOptionButtonIcon}/>
-                </TouchableOpacity>
-                <Text style={styles.accountOptionName}>{text}</Text>
-            </View>
-        );
-    }
-
-    renderAccount = ({ text, icon }) => {
-        return (
-            <View style={styles.accountView}>
-                <FontAwesomeIcon icon={icon} style={styles.accountIcon} size={20}/>
-                <Text style={styles.accountType}>{text}</Text>
-                <Text stye={styles.accountBalance}>$ 0.00</Text>
-                {this.renderAccountOption({
-                    text: 'Recargar',
-                    icon: faArrowDown,
-                    bgColor: '#25b535',
-                    color: '#ffffff'
-                })}
-                {this.renderAccountOption({
-                    text: 'Transferir',
-                    icon: faExchangeAlt,
-                    bgColor: '#bbbbbb',
-                    color: '#000000'
-                })}
-            </View>
-        );
-    }
-
 	render() {
 		return (
         <View style={styles.container}>
-            <Text style={styles.lblTitle}>Mis cuentas</Text>
+            <Text style={styles.lblTitle}>Categorías</Text>
             <ScrollView contentContainerStyle={styles.scrollContentContainer}>
-                {this.renderAccount({
-                    text: 'Débito',
-                    icon: faCreditCard
-                })}
-                {this.renderAccount({
-                    text: 'Efectivo',
-                    icon: faMoneyBill
-                })}
+                <Text>Categorías</Text>
             </ScrollView>
-            <TabBar selected="Accounts"/>
+            <TabBar selected="Categories"/>
         </View>
 		);
 	}
