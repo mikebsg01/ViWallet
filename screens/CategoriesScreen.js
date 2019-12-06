@@ -11,6 +11,52 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+import {
+    faShoppingBasket,
+    faUtensils,
+    faFilm,
+    faBus,
+    faUsers,
+    faBriefcaseMedical,
+    faShoppingCart,
+    faGift
+} from '@fortawesome/free-solid-svg-icons';
+
+const categories = [
+    {
+        name: 'Provisiones',
+        icon: faShoppingBasket
+    },
+    {
+        name: 'Restaurante',
+        icon: faUtensils
+    },
+    {
+        name: 'Ocio',
+        icon: faFilm
+    },
+    {
+        name: 'Transporte',
+        icon: faBus
+    },
+    {
+        name: 'Salud',
+        icon: faBriefcaseMedical
+    },
+    {
+        name: 'Familia',
+        icon: faUsers
+    },
+    {
+        name: 'Compras',
+        icon: faShoppingCart
+    },
+    {
+        name: 'Regalos',
+        icon: faGift
+    }
+];
+
 export default class CategoriesScreen extends Component {
 
     static navigationOptions = {
@@ -46,12 +92,28 @@ export default class CategoriesScreen extends Component {
         this.getUser();
     }
 
+    renderCategory = ({ name, icon }, index) => {
+        return (
+            <View style={styles.categoryView} key={`category-${index}`}>
+                <Text style={styles.categoryName}>{name}</Text>
+                <TouchableOpacity onPress={this.onPressRecharge} style={styles.categoryButton}>
+                    <FontAwesomeIcon icon={icon} style={styles.categoryIcon}/>
+                </TouchableOpacity>
+                <Text style={styles.categoryExpense}>$ 0.00</Text>
+            </View>
+        );
+    }
+
+    renderCategories = () => {
+        return categories.map((category, index) => this.renderCategory(category, index));
+    }
+
 	render() {
 		return (
         <View style={styles.container}>
             <Text style={styles.lblTitle}>Categorías</Text>
             <ScrollView contentContainerStyle={styles.scrollContentContainer}>
-                <Text>Categorías</Text>
+                {this.renderCategories()}
             </ScrollView>
             <TabBar selected="Categories"/>
         </View>
@@ -75,45 +137,32 @@ const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 35,
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'stretch'
-	},
-    accountView: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'space-around',
-        alignItems: 'center',
-        paddingVertical: 20,
-        paddingHorizontal: 10,
-        borderBottomColor: '#f9f9f9',
-        borderBottomWidth: 1
     },
-    accountIcon: {
-        flexBasis: 40
-    },
-    accountType: {
-        flexBasis: 60,
-        fontSize: 14
-    },
-    accountBalance: {
-        fontSize: 14,
-        paddingHorizontal: 12
-    },
-    accountOption: {
+    categoryView: {
+        flexBasis: '25%',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 12
     },
-    accountOptionName: {
-        marginTop: 6,
+    categoryName: {
         fontSize: 12
     },
-    accountOptionButton: {
-        elevation: 8,
+    categoryButton: {
+        marginTop: 6,
+        elevation: 4,
         borderRadius: 50,
-        padding: 8
+        padding: 12,
+        backgroundColor: '#00f'
     },
-    accountOptionButtonIcon: {
+    categoryIcon: {
         color: '#ffffff'
+    },
+    categoryExpense: {
+        marginTop: 6,
+        fontSize: 12
     }
 });

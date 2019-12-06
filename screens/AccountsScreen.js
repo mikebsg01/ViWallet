@@ -57,10 +57,10 @@ export default class AccountsScreen extends Component {
         alert('Recargar');
     }
 
-    renderAccountOption = ({ text, icon, bgColor, color }) => {
+    renderAccountOption = ({ text, icon, bgColor, textColor }) => {
         const accountOptionButton = Object.assign({}, styles.accountOptionButton, { 
             backgroundColor: bgColor,
-            color: color
+            color: textColor
         });
 
         return (
@@ -83,13 +83,13 @@ export default class AccountsScreen extends Component {
                     text: 'Recargar',
                     icon: faArrowDown,
                     bgColor: '#25b535',
-                    color: '#ffffff'
+                    textColor: '#ffffff'
                 })}
                 {this.renderAccountOption({
                     text: 'Transferir',
                     icon: faExchangeAlt,
                     bgColor: '#bbbbbb',
-                    color: '#000000'
+                    textColor: '#000000'
                 })}
             </View>
         );
@@ -165,11 +165,9 @@ const styles = StyleSheet.create({
         fontSize: 12
     },
     accountOptionButton: {
-        elevation: 8,
+        elevation: 4,
         borderRadius: 50,
         padding: 8
     },
-    accountOptionButtonIcon: {
-        color: '#ffffff'
-    }
+    accountOptionButtonIcon: {}
 });
