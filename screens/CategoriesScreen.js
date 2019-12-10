@@ -25,35 +25,43 @@ import {
 const categories = [
     {
         name: 'Provisiones',
-        icon: faShoppingBasket
+        icon: faShoppingBasket,
+        backgroundColor: '#4fa7f0'
     },
     {
         name: 'Restaurante',
-        icon: faUtensils
+        icon: faUtensils,
+        backgroundColor: '#4c5bb9'
     },
     {
         name: 'Ocio',
-        icon: faFilm
+        icon: faFilm,
+        backgroundColor: '#fc4a86'
     },
     {
         name: 'Transporte',
-        icon: faBus
+        icon: faBus,
+        backgroundColor: '#f6ab47'
     },
     {
         name: 'Salud',
-        icon: faBriefcaseMedical
+        icon: faBriefcaseMedical,
+        backgroundColor: '#54ad56'
     },
     {
         name: 'Familia',
-        icon: faUsers
+        icon: faUsers,
+        backgroundColor: '#8058f5'
     },
     {
         name: 'Compras',
-        icon: faShoppingCart
+        icon: faShoppingCart,
+        backgroundColor: '#f15352'
     },
     {
         name: 'Regalos',
-        icon: faGift
+        icon: faGift,
+        backgroundColor: '#4fa7f0'
     }
 ];
 
@@ -92,11 +100,15 @@ export default class CategoriesScreen extends Component {
         this.getUser();
     }
 
-    renderCategory = ({ name, icon }, index) => {
+    renderCategory = ({ name, icon, backgroundColor }, index) => {
+        const categoryButton = Object.assign({}, styles.categoryButton, { 
+            backgroundColor: backgroundColor
+        });
+
         return (
             <View style={styles.categoryView} key={`category-${index}`}>
                 <Text style={styles.categoryName}>{name}</Text>
-                <TouchableOpacity onPress={this.onPressRecharge} style={styles.categoryButton}>
+                <TouchableOpacity onPress={this.onPressRecharge} style={categoryButton}>
                     <FontAwesomeIcon icon={icon} style={styles.categoryIcon}/>
                 </TouchableOpacity>
                 <Text style={styles.categoryExpense}>$ 0.00</Text>
@@ -155,8 +167,7 @@ const styles = StyleSheet.create({
         marginTop: 6,
         elevation: 4,
         borderRadius: 50,
-        padding: 12,
-        backgroundColor: '#00f'
+        padding: 12
     },
     categoryIcon: {
         color: '#ffffff'

@@ -27,12 +27,14 @@ export default class AccountsScreen extends Component {
     state = {
         firstName: null,
         lastName: null,
-        email: null
+        email: null,
+        transactions: []
     };
 
     constructor(props) {
         super(props);
         this.getUser = this.getUser.bind(this);
+        this.getTransactions = this.getTransactions.bind(this);
     }
 
     getUser = async () => {
@@ -49,15 +51,39 @@ export default class AccountsScreen extends Component {
         }
     };
 
-    componentDidMount() {
-        this.getUser();
+    getTransactions = async () => {
+        try {
+            const transactions = JSON.parse(await AsyncStorage.getItem(`${this.state.email}_transactions`)) || [];
+
+            this.setState({
+                transactions
+            });
+
+            alert(JSON.stringify(transactions));
+        } catch (error) {
+            alert('Ocurrió un error al cargar los datos.');
+        }
     }
 
-    onPressRecharge() {
-        alert('Recargar');
+    async componentDidMount() {
+        await this.getUser();
+        await this.getTransactions();
     }
 
-    renderAccountOption = ({ text, icon, bgColor, textColor }) => {
+    onPressRecharge(action, account, accountText) {
+        const { navigation } = this.props;
+
+        if (action == 'recharge') {
+            navigation.navigate('Transaction', {
+                action: action,
+                title: 'Recargar',
+                account: account,
+                accountText: accountText,
+            });
+        }
+    }
+
+    renderAccountOption = ({ action, text, account, accountText, icon, bgColor, textColor }) => {
         const accountOptionButton = Object.assign({}, styles.accountOptionButton, { 
             backgroundColor: bgColor,
             color: textColor
@@ -65,7 +91,7 @@ export default class AccountsScreen extends Component {
 
         return (
             <View style={styles.accountOption}>
-                <TouchableOpacity onPress={this.onPressRecharge} style={accountOptionButton}>
+                <TouchableOpacity onPress={() => this.onPressRecharge(action, account, accountText)} style={accountOptionButton}>
                     <FontAwesomeIcon icon={icon} style={styles.accountOptionButtonIcon}/>
                 </TouchableOpacity>
                 <Text style={styles.accountOptionName}>{text}</Text>
@@ -73,20 +99,43 @@ export default class AccountsScreen extends Component {
         );
     }
 
-    renderAccount = ({ text, icon }) => {
+    getBalance(account) {
+        const accountTransactions = this.state.transactions.filter(transaction => {
+            return transaction.account === account;
+
+        });
+
+        return accountTransactions.reduce((balance, transaction) => {
+            let amount = 0;
+
+            if (transaction.type === 'recharge') {
+                amount = transaction.amount;
+            }
+
+            return balance + amount;
+        }, 0);
+    }
+
+    renderAccount = ({ name, text, icon }) => {
         return (
             <View style={styles.accountView}>
                 <FontAwesomeIcon icon={icon} style={styles.accountIcon} size={20}/>
                 <Text style={styles.accountType}>{text}</Text>
-                <Text stye={styles.accountBalance}>$ 0.00</Text>
+                <Text stye={styles.accountBalance}>$ {this.getBalance(name).toFixed(2)}</Text>
                 {this.renderAccountOption({
+                    action: 'recharge',
                     text: 'Recargar',
+                    account: name,
+                    accountText: text,
                     icon: faArrowDown,
                     bgColor: '#25b535',
                     textColor: '#ffffff'
                 })}
                 {this.renderAccountOption({
+                    action: 'transfer',
                     text: 'Transferir',
+                    account: name,
+                    accountText: text,
                     icon: faExchangeAlt,
                     bgColor: '#bbbbbb',
                     textColor: '#000000'
@@ -101,10 +150,12 @@ export default class AccountsScreen extends Component {
             <Text style={styles.lblTitle}>Mis cuentas</Text>
             <ScrollView contentContainerStyle={styles.scrollContentContainer}>
                 {this.renderAccount({
+                    name: 'debit',
                     text: 'Débito',
                     icon: faCreditCard
                 })}
                 {this.renderAccount({
+                    name: 'cash',
                     text: 'Efectivo',
                     icon: faMoneyBill
                 })}

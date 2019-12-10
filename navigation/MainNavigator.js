@@ -6,10 +6,12 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import AccountsScreen from '../screens/AccountsScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
+import TransactionScreen from '../screens/TransactionScreen';
 
 const AppStack = createStackNavigator({
     Accounts: AccountsScreen,
-    Categories: CategoriesScreen
+    Categories: CategoriesScreen,
+    Transaction: TransactionScreen
 });
 
 const AuthStack = createStackNavigator({ 
